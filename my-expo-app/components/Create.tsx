@@ -4,13 +4,28 @@ import { TextInput,Button } from 'react-native-paper'
 
 
 
-function Create(){
+function Create(props){
     // change the body to be a photo with a list of images
     const [title,setTitle] = useState("")
     const [body, setBody] = useState("")
 
+    const insertData = () => {
+        fetch('http://192.168.1.110:3000/add',{
+            method: 'POST',
+            headers:{
+                'Content-Type' : 'application/json'
+            },
+            body: JSON.stringify({title:title, body:body})
+        })
+        .then(resp => resp.json())
+        .then(data => {
+            props.navigation.navigate('Home')
+        })
+        .catch(error => console.log(error))
+    }
+
     return (
-        <View> 
+        <View className={styles.container}> 
             <TextInput className={styles.inputStyle}
             label = "Title"
             value = {title}
@@ -30,7 +45,8 @@ function Create(){
             <Button className = {`my-1`}
             icon = 'pencil'
             mode = 'contained'
-            onPress = {() => console.log("Pressed")}
+            buttonColor='black'
+            onPress = {() => insertData()}
             > Insert Article</Button>
         </View>
         
@@ -38,6 +54,7 @@ function Create(){
 }
 
 const styles = {
+    container: `flex-1 bg-yellow-500`,
     inputStyle: `p-10 my-30`
 }
 

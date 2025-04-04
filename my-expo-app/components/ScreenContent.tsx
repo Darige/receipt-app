@@ -2,72 +2,46 @@ import { Text, View, Button, FlatList } from 'react-native';
 import React , {useState,useEffect} from 'react'
 
 
-import { EditScreenInfo } from './EditScreenInfo';
 
 import Create from './Create'
+import Home from './Home'
 
-import {Card, FAB} from 'react-native-paper';
 
-type ScreenContentProps = {
-  title: string;
-  path: string;
-  children?: React.ReactNode;
-};
 
-export const ScreenContent = ({ title, path, children }: ScreenContentProps) => {
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 
-  const [data,setData] = useState([])
-
-  useEffect(() => {
-    fetch('http://192.168.1.110/get', {
-      method : 'GET'
-    })
-    .then(resp => resp.json())
-    .then(receipt => {
-        setData(receipt)
-    })
-  },[])
+const Stack = createStackNavigator()
 
 
 
 
-  const renderData = (item) => {
-    return (
-      <Card className={styles.cardStyle}>
-        <Text className = {styles.title}>{item.title}</Text>
-        <Text>{item.body}</Text>
-      </Card>
-    )
-  }
-
+function ScreenContent(){
   return (
-    // somethings i took out
-    //<Text className={styles.title}>{title}</Text>
-    //<View className={styles.separator} />
-    //<EditScreenInfo path={path} />
-    // {children}
-    
-    //<View className={styles.container}>
-    //  <FlatList
-    //  data={data}
-    //  renderItem={({item} ) => (
-    //      renderData(item) 
-    //  )}
-    //  keyExtractor={ item => `${item.id}`}
-    //  />
-    //  <FAB 
-    //  className = {styles.fab}
-    //  icon = "plus"
-    //  onPress = {() => console.log("Pressed")}
-//
-    //  
-    //  />
-    //</View>
     <View className={styles.container}>
-        <Create/>
+      <Stack.Navigator
+        screenOptions={{
+          headerStyle: {backgroundColor: 'black'},
+          headerTintColor: 'white', // Color of the header text and back button
+          headerTitleStyle: {fontWeight: 'bold'},
+        }}
+      >
+
+        <Stack.Screen name = "Home" component = {Home} />
+        <Stack.Screen name = "Create" component= {Create} />
+      </Stack.Navigator>
     </View>
   );
 };
+
+export default() => {
+  return (
+    <NavigationContainer>
+      <ScreenContent/>
+    </NavigationContainer>
+  )
+}
+
 const styles = {
   container: `flex-1 bg-yellow-500 justify-start pt-20`,
   separator: `h-[1px] my-7 w-4/5 bg-gray-500`,
