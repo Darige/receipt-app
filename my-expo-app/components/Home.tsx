@@ -20,7 +20,7 @@ function Home(props: any){
 
   const loadData = () => {
     fetch('http://192.168.1.110:3000/get', {
-      method : 'GET'
+      method: 'GET',
     })
     .then(resp => resp.json())
     .then(receipt => {
@@ -48,7 +48,6 @@ function Home(props: any){
   }
 
   return (
-    // somethings i took out
     <View className={styles.container}>
       <FlatList
       data={data}
@@ -64,24 +63,40 @@ function Home(props: any){
       icon = "plus"
       onPress = {() => props.navigation.navigate('Create')}
 
-      
-      />
+      <Button
+        mode="contained"
+        style={{ width: 220, marginBottom: 16 }}
+        buttonColor="#10B981"
+        onPress={() => props.navigation.navigate('Create')}
+      >
+        Add Receipt
+      </Button>
+
+      <Button
+        mode="contained"
+        style={{ width: 220, marginBottom: 16 }}
+        buttonColor="#3B82F6"
+        onPress={() => props.navigation.navigate('ReceiptList')}
+      >
+        View Receipts
+      </Button>
+
+      <Button
+        mode="contained"
+        style={{ width: 220 }}
+        buttonColor="#F59E0B"
+        onPress={() => {
+          console.log('Ready to download:', data);
+        }}
+      >
+        Download
+      </Button>
     </View>
-
-    //<View className={styles.container}>
-    //<Text className={styles.title}>{title}</Text>
-    //<View className={styles.separator} />
-    //<EditScreenInfo path={path} />
-    // {children}
-
   );
-};
+}
+
 const styles = {
-  container: `flex-1 bg-yellow-500 justify-start pt-20`,
-  separator: `h-[1px] my-7 w-4/5 bg-gray-500`,
-  title: `text-xl font-bold`,
-  cardStyle: `my-10 p-1` ,
-  fab : `absolute my-1 right-0 bottom-5 bg-green-500`
+  container: `flex-1 bg-yellow-50 items-center justify-center px-4`,
 };
 
-export default Home
+export default Home;
