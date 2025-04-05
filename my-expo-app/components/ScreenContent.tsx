@@ -5,6 +5,7 @@ import Create from './Create';
 import Home from './Home';
 import Details from './Details';
 import Edit from './Edit';
+import ReceiptList from './receipt_list'
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -27,6 +28,7 @@ function ScreenContent() {
           <Stack.Screen name="Create" component={Create} />
           <Stack.Screen name="Details" component={Details} />
           <Stack.Screen name="Edit" component={Edit} />
+          <Stack.Screen name ="ReceiptList" component={ReceiptList}/>
         </Stack.Navigator>
       </View>
     </>

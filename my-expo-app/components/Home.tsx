@@ -5,41 +5,7 @@ import { StatusBar } from 'expo-status-bar';
 
 
 function Home(props: any) {
-  const [data, setData] = useState([]);
-  const [loading, setIsLoading] = useState(true);
 
-  const loadData = () => {
-    fetch('http://192.168.1.166:3000/get', {
-      method: 'GET',
-    })
-      .then((resp) => resp.json())
-      .then((receipt) => {
-        setData(receipt);
-        setIsLoading(false);
-      })
-      .catch((err) => {
-        console.error('Error fetching receipts:', err);
-        setIsLoading(false);
-      });
-  };
-
-  useEffect(() => {
-    loadData();
-  }, []);
-
-  const clickedItem = (data: any) => {
-    props.navigation.navigate('Details', { data: data });
-  };
-
-  const renderData = (item: any) => {
-    return (
-      <Card className={styles.cardStyle} mode="outlined">
-        <Text className={styles.title} onPress={() => clickedItem(item)}>
-          {item.title}
-        </Text>
-      </Card>
-    );
-  };
 
   return (
     <View className={styles.container}>
@@ -62,7 +28,7 @@ function Home(props: any) {
           mode="contained"
           style={{ width: 220, alignSelf: 'center', marginBottom: 12 }}
           buttonColor="#3B82F6"
-          onPress={() => console.log('Viewing list...')}
+          onPress={() => props.navigation.navigate('ReceiptList')}
         >
           View Receipt List
         </Button>
@@ -72,22 +38,13 @@ function Home(props: any) {
           style={{ width: 220, alignSelf: 'center' }}
           buttonColor="#F59E0B"
           onPress={() => {
-            console.log('Download Receipts:', data);
+            console.log('Download Receipts:');
           }}
         >
           Download Receipts
         </Button>
       </View>
 
-      {/* List View (FlatList still here in case you want to show it) */}
-      <FlatList
-        data={data}
-        renderItem={({ item }) => renderData(item)}
-        keyExtractor={(item) => `${item.id}`}
-        refreshing={loading}
-        onRefresh={loadData}
-        contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 100 }}
-      />
     </View>
   );
 }
