@@ -1,6 +1,7 @@
-import { Text, View, Button, FlatList } from 'react-native';
+import { Text, View, FlatList } from 'react-native';
 import React , {useState,useEffect} from 'react'
 
+import {Button} from 'react-native-paper';
 
 
 
@@ -12,28 +13,36 @@ type ScreenContentProps = {
   children?: React.ReactNode;
 };
 
-function Home(props){
+function Home(props: any){
 
   const [data,setData] = useState([])
+  const [loading,setIsLoading] = useState(true)
 
-  useEffect(() => {
+  const loadData = () => {
     fetch('http://192.168.1.110:3000/get', {
       method : 'GET'
     })
     .then(resp => resp.json())
     .then(receipt => {
         setData(receipt)
+        setIsLoading(false)
     })
+  }
+
+  useEffect(() => {
+    loadData()
   },[])
 
+  const clickedItem = (data) => {
+    props.navigation.navigate('Details', {data:data})
+  }
 
 
 
-  const renderData = (item) => {
+  const renderData = (item : any) => {
     return (
       <Card className={styles.cardStyle}>
-        <Text className = {styles.title}>{item.title}</Text>
-        <Text>{item.body}</Text>
+        <Text className = {styles.title} onPress = {() => clickedItem(item)}>{item.title}</Text>
       </Card>
     )
   }
@@ -46,6 +55,8 @@ function Home(props){
       renderItem={({item} ) => (
           renderData(item) 
       )}
+      onRefresh= {() => loadData}
+      refreshing = {loading}
       keyExtractor={ item => `${item.id}`}
       />
       <FAB 

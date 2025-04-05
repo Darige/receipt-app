@@ -5,6 +5,8 @@ import React , {useState,useEffect} from 'react'
 
 import Create from './Create'
 import Home from './Home'
+import Details from './Details'
+import Edit from './Edit'
 
 
 
@@ -29,6 +31,8 @@ function ScreenContent(){
 
         <Stack.Screen name = "Home" component = {Home} />
         <Stack.Screen name = "Create" component= {Create} />
+        <Stack.Screen name = "Details" component= {Details} />
+        <Stack.Screen name = "Edit" component={Edit} />
       </Stack.Navigator>
     </View>
   );
