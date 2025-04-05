@@ -1,87 +1,101 @@
-import { Text, View, FlatList } from 'react-native';
-import React , {useState,useEffect} from 'react'
+import React, { useState, useEffect } from 'react';
+import { View, Text, FlatList } from 'react-native';
+import { Button, Card } from 'react-native-paper';
+import { StatusBar } from 'expo-status-bar';
 
-import {Button} from 'react-native-paper';
 
-
-
-import {Card, FAB} from 'react-native-paper';
-
-type ScreenContentProps = {
-  title: string;
-  path: string;
-  children?: React.ReactNode;
-};
-
-function Home(props: any){
-
-  const [data,setData] = useState([])
-  const [loading,setIsLoading] = useState(true)
+function Home(props: any) {
+  const [data, setData] = useState([]);
+  const [loading, setIsLoading] = useState(true);
 
   const loadData = () => {
-    fetch('http://192.168.1.110:3000/get', {
-      method : 'GET'
+    fetch('http://192.168.1.166:3000/get', {
+      method: 'GET',
     })
-    .then(resp => resp.json())
-    .then(receipt => {
-        setData(receipt)
-        setIsLoading(false)
-    })
-  }
+      .then((resp) => resp.json())
+      .then((receipt) => {
+        setData(receipt);
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        console.error('Error fetching receipts:', err);
+        setIsLoading(false);
+      });
+  };
 
   useEffect(() => {
-    loadData()
-  },[])
+    loadData();
+  }, []);
 
-  const clickedItem = (data) => {
-    props.navigation.navigate('Details', {data:data})
-  }
+  const clickedItem = (data: any) => {
+    props.navigation.navigate('Details', { data: data });
+  };
 
-
-
-  const renderData = (item : any) => {
+  const renderData = (item: any) => {
     return (
-      <Card className={styles.cardStyle}>
-        <Text className = {styles.title} onPress = {() => clickedItem(item)}>{item.title}</Text>
+      <Card className={styles.cardStyle} mode="outlined">
+        <Text className={styles.title} onPress={() => clickedItem(item)}>
+          {item.title}
+        </Text>
       </Card>
-    )
-  }
+    );
+  };
 
   return (
-    // somethings i took out
     <View className={styles.container}>
-      <FlatList
-      data={data}
-      renderItem={({item} ) => (
-          renderData(item) 
-      )}
-      onRefresh= {() => loadData}
-      refreshing = {loading}
-      keyExtractor={ item => `${item.id}`}
-      />
-      <FAB 
-      className = {styles.fab}
-      icon = "plus"
-      onPress = {() => props.navigation.navigate('Create')}
+      <StatusBar backgroundColor="#FEFCE8" style="dark" />
 
-      
+      <Text className="text-3xl font-bold mb-8 text-center">📲 Receipt Manager</Text>
+
+      {/* Buttons Row */}
+      <View className="w-full px-4 mb-8">
+        <Button
+          mode="contained"
+          style={{ width: 220, alignSelf: 'center', marginBottom: 12 }}
+          buttonColor="#10B981"
+          onPress={() => props.navigation.navigate('Create')}
+        >
+          Add Receipt
+        </Button>
+
+        <Button
+          mode="contained"
+          style={{ width: 220, alignSelf: 'center', marginBottom: 12 }}
+          buttonColor="#3B82F6"
+          onPress={() => console.log('Viewing list...')}
+        >
+          View Receipt List
+        </Button>
+
+        <Button
+          mode="contained"
+          style={{ width: 220, alignSelf: 'center' }}
+          buttonColor="#F59E0B"
+          onPress={() => {
+            console.log('Download Receipts:', data);
+          }}
+        >
+          Download Receipts
+        </Button>
+      </View>
+
+      {/* List View (FlatList still here in case you want to show it) */}
+      <FlatList
+        data={data}
+        renderItem={({ item }) => renderData(item)}
+        keyExtractor={(item) => `${item.id}`}
+        refreshing={loading}
+        onRefresh={loadData}
+        contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 100 }}
       />
     </View>
-
-    //<View className={styles.container}>
-    //<Text className={styles.title}>{title}</Text>
-    //<View className={styles.separator} />
-    //<EditScreenInfo path={path} />
-    // {children}
-
   );
-};
+}
+
 const styles = {
-  container: `flex-1 bg-yellow-500 justify-start pt-20`,
-  separator: `h-[1px] my-7 w-4/5 bg-gray-500`,
-  title: `text-xl font-bold`,
-  cardStyle: `my-10 p-1` ,
-  fab : `absolute my-1 right-0 bottom-5 bg-green-500`
+  container: `flex-1 bg-[#FEFCE8] pt-16`, // softer yellow
+  title: `text-lg font-semibold`,
+  cardStyle: `mb-4 p-4 rounded-lg bg-white`,
 };
 
-export default Home
+export default Home;

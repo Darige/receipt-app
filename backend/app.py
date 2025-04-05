@@ -83,4 +83,4 @@ with app.app_context():
 
 if __name__ == "__main__":
     #local is 3000
-    app.run(host = '192.168.1.110',port=3000,debug = True)
+    app.run(host = '192.168.1.166',port=3000,debug = True)
