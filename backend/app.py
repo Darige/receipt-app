@@ -2,7 +2,8 @@ from flask import Flask,jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 import datetime
 from flask_marshmallow import Marshmallow
-
+#from PIL import Image add these packages later
+#import pytesseract
 
 app = Flask(__name__)
 
@@ -48,13 +49,27 @@ def post_details(id):
 
 @app.route('/add',methods = ['POST'])
 def add_receipt():
-    title = request.json['title']
-    body = request.json['body']
+    title = request.form.get('title')
+    body = request.form.get('body')
 
     receipts = Receipts(title,body)
     db.session.add(receipts)
     db.session.commit()
     return receipt_schema.jsonify(receipts)
+
+@app.route('/add_receipt',methods = ['POST'])
+def add_receipt_image():
+    title = request.form.get('title')
+    body = request.form.get('body')
+    image = request.form.get('photo')
+    
+    body = ""
+    #body = pytesseract.image_to_string(image)
+    receipts = Receipts(title,body)
+    db.session.add(receipts)
+    db.session.commit()
+    return receipt_schema.jsonify(receipts)
+
 
 
 @app.route('/update/<id>', methods = ['PUT'])
@@ -83,4 +98,4 @@ with app.app_context():
 
 if __name__ == "__main__":
     #local is 3000
-    app.run(host = '192.168.1.166',port=3000,debug = True)
+    app.run(host = '192.168.1.110',port=3000,debug = True)

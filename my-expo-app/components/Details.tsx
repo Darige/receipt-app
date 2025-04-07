@@ -7,7 +7,7 @@ function Details(props: any){
     const data = props.route.params.data;
 
     const deleteData =  (data) => {
-        fetch(`http://192.168.1.166:3000/delete/${data.id}`,{
+        fetch(`http://192.168.1.110:3000/delete/${data.id}`,{
             method: 'DELETE',
             headers:{
                 'Content-Type' : 'application/json'

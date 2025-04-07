@@ -9,7 +9,7 @@ function ReceiptList(props: any) {
   const [loading, setIsLoading] = useState(true);
 
   const loadData = () => {
-    fetch('http://192.168.1.116:3000/get', {
+    fetch('http://192.168.1.110:3000/get', {
       method: 'GET',
     })
       .then((resp) => resp.json())
