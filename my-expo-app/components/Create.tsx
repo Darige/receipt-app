@@ -110,23 +110,26 @@ function Create(props) {
         onChangeText={(text) => setBody(text)}
       />
 
-      <Button
-        icon="image"
-        mode="contained"
-        onPress={choosePhoto}
-        style={{ marginVertical: 10 }}
-      >
-        Select Image
-      </Button>
+<View style={styles.buttonRow}>
+  <Button
+    icon="image"
+    mode="contained"
+    onPress={choosePhoto}
+    style={styles.sideButton}
+  >
+    Select Image
+  </Button>
 
-      <Button
-        icon="camera"
-        mode="contained"
-        onPress={takePhoto}
-        style={{ marginVertical: 10 }}
-      >
-        Take Photo
-      </Button>
+  <Button
+    icon="camera"
+    mode="contained"
+    onPress={takePhoto}
+    style={styles.sideButton}
+  >
+    Take Photo
+  </Button>
+</View>
+
 
       {image && (
         <Image 
@@ -151,6 +154,19 @@ function Create(props) {
 const styles = {
   container: `flex-1 bg-yellow-50 p-4 `,
   inputStyle: `mb-6`,
+
+  buttonRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginVertical: 10,
+    gap: 10, // if using React Native 0.71+ or with Tailwind/nativewind
+  },
+  
+  sideButton: {
+    flex: 1,
+    marginHorizontal: 5,
+  },
+  
 };
 
 export default Create;
