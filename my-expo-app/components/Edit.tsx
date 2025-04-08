@@ -61,7 +61,7 @@ function Edit(props) {
         style={styles.button}
         onPress={confirmUpdate}
       >
-        Update Article
+        Update List
       </Button>
     </View>
   );
