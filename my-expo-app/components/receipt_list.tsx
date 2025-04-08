@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList } from 'react-native';
+import { View, Text, FlatList, ActivityIndicator } from 'react-native';
 import { Button, Card } from 'react-native-paper';
 import { StatusBar } from 'expo-status-bar';
-
 
 function ReceiptList(props: any) {
   const [data, setData] = useState([]);
   const [loading, setIsLoading] = useState(true);
 
   const loadData = () => {
-    fetch('http://192.168.1.110:3000/get', {
+    fetch('http://192.168.1.166:3000/get', {
       method: 'GET',
     })
       .then((resp) => resp.json())
@@ -33,36 +32,52 @@ function ReceiptList(props: any) {
 
   const renderData = (item: any) => {
     return (
-      <Card className={styles.cardStyle} mode="outlined">
-        <Text className={styles.title} onPress={() => clickedItem(item)}>
-          {item.title}
-        </Text>
+      <Card
+        mode="outlined"
+        className={styles.cardStyle}
+        onPress={() => clickedItem(item)}
+      >
+        <View className="p-4">
+          <Text className="text-xl font-bold text-gray-800">{item.title}</Text>
+          <Text className="text-sm text-gray-500 mt-1">
+            Tap to view details
+          </Text>
+        </View>
       </Card>
     );
   };
+
+  const renderEmpty = () => (
+    <View className="items-center mt-20">
+      <Text className="text-gray-500 text-lg">No receipts found.</Text>
+    </View>
+  );
 
   return (
     <View className={styles.container}>
       <StatusBar backgroundColor="#FEFCE8" style="dark" />
 
-
-      {/* List View (FlatList still here in case you want to show it) */}
-      <FlatList
-        data={data}
-        renderItem={({ item }) => renderData(item)}
-        keyExtractor={(item) => `${item.id}`}
-        refreshing={loading}
-        onRefresh={loadData}
-        contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 100 }}
-      />
+      {loading ? (
+        <ActivityIndicator size="large" className="mt-10" />
+      ) : (
+        <FlatList
+          data={data}
+          renderItem={({ item }) => renderData(item)}
+          keyExtractor={(item) => `${item.id}`}
+          refreshing={loading}
+          onRefresh={loadData}
+          ListEmptyComponent={renderEmpty}
+          contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 100 }}
+        />
+      )}
     </View>
   );
 }
 
 const styles = {
-  container: `flex-1 bg-[#FEFCE8] pt-16`, // softer yellow
+  container: `flex-1 bg-[#FEFCE8] pt-4`,
+  cardStyle: `mb-4 rounded-xl shadow bg-white`,
   title: `text-lg font-semibold`,
-  cardStyle: `mb-4 p-4 rounded-lg bg-white`,
 };
 
 export default ReceiptList;

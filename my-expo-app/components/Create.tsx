@@ -73,7 +73,7 @@ function Create(props) {
     }
 
     try {
-      const response = await fetch('http://192.168.1.110:3000/add', {
+      const response = await fetch('http://192.168.1.166:3000/add', {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
