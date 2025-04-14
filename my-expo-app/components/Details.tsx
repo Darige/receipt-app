@@ -22,7 +22,7 @@ function Details(props: any) {
   };
 
   const deleteData = (data: any) => {
-    fetch(`http://192.168.1.166:3000/delete/${data.id}`, {
+    fetch(`http://localhost:3000/delete/${data.id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',

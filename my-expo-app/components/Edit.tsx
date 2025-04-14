@@ -20,7 +20,7 @@ function Edit(props) {
   };
 
   const updateData = () => {
-    fetch(`http://192.168.1.166:3000/update/${data.id}`, {
+    fetch(`http://localhost:3000/update/${data.id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

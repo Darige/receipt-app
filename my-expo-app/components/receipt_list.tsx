@@ -8,7 +8,7 @@ function ReceiptList(props: any) {
   const [loading, setIsLoading] = useState(true);
 
   const loadData = () => {
-    fetch('http://192.168.1.166:3000/get', {
+    fetch('http://localhost:3000/get', {
       method: 'GET',
     })
       .then((resp) => resp.json())
